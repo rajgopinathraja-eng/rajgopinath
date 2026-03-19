@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P. Raj Gopinath — Future Data Scientist</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; margin: 0; }
+    * { box-sizing: border-box; }
+
+    .font-heading { font-family: 'Outfit', sans-serif; }
+    .font-mono { font-family: 'Space Mono', monospace; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,255,136,0.15); }
+      50% { box-shadow: 0 0 40px rgba(0,255,136,0.3); }
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #00ff88; }
+    }
+    @keyframes orbit {
+      from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+      to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .animate-float { animation: float 3s ease-in-out infinite; }
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .animate-orbit { animation: orbit 8s linear infinite; }
+    .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    .delay-7 { animation-delay: 0.7s; }
+    .delay-8 { animation-delay: 0.8s; }
+
+    .typing-text {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 3px solid #00ff88;
+      animation: typing 2.5s steps(30, end), blink-caret 0.75s step-end infinite;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .skill-card {
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,136,0.05), transparent);
+      transition: left 0.5s;
+    }
+    .skill-card:hover::before { left: 100%; }
+    .skill-card:hover { transform: translateY(-6px) scale(1.02); }
+
+    .progress-bar { transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
+    .roadmap-item { transition: all 0.3s ease; }
+    .roadmap-item:hover { transform: translateX(8px); }
+
+    .nav-link {
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0f1c; }
+    ::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 3px; }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app-wrapper" class="w-full h-full overflow-auto grid-bg" style="background-color: #0a0f1c; color: #e0e8f0;"><!-- Floating blobs -->
+   <div class="blob" style="width:400px;height:400px;top:10%;left:-5%;background:#00ff88;"></div>
+   <div class="blob" style="width:300px;height:300px;top:50%;right:-5%;background:#00a8ff;"></div>
+   <div class="blob" style="width:250px;height:250px;bottom:10%;left:30%;background:#ff6b35;"></div><!-- Navigation -->
+   <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b" style="background: rgba(10,15,28,0.85); border-color: rgba(0,255,136,0.1);">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+     <div class="font-heading font-bold text-lg" style="color: #00ff88;"><span style="color: #e0e8f0;">&lt;</span>Raj<span style="color: #e0e8f0;">/&gt;</span>
+     </div>
+     <div class="hidden sm:flex gap-8 font-mono text-sm"><a href="#about" class="nav-link" style="color: #8899aa;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#8899aa'"> <span style="color:#00ff88;">01.</span> about <span style="position:absolute;bottom:-4px;left:0;width:0;height:2px;background:#00ff88;transition:width 0.3s;" onmouseover="this.style.width='100%'" onmouseout="this.style.width='0'"></span> </a> <a href="#skills" class="nav-link" style="color: #8899aa;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#8899aa'"> <span style="color:#00ff88;">02.</span> skills </a> <a href="#roadmap" class="nav-link" style="color: #8899aa;" onmouseover="this.style.color='#00ff88'" onmouseout="this.style.color='#8899aa'"> <span style="color:#00ff88;">03.</span> roadmap </a>
+     </div>
+    </div>
+   </nav><!-- Hero Section -->
+   <header class="relative min-h-screen flex items-center justify-center px-6 pt-20" style="min-height: 100%;">
+    <div class="max-w-4xl mx-auto text-center relative z-10"><!-- Orbiting element -->
+     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div class="animate-spin-slow" style="width:260px;height:260px;border:1px dashed rgba(0,255,136,0.15);border-radius:50%;"></div>
+     </div>
+     <p class="font-mono text-sm mb-4 animate-fade-in-up delay-1" style="color: #00ff88;">Hello World! I am</p>
+     <h1 id="hero-name" class="font-heading font-800 text-5xl sm:text-7xl mb-4 animate-fade-in-up delay-2" style="color: #e0e8f0; line-height: 1.1;">P. Raj Gopinath</h1>
+     <div class="animate-fade-in-up delay-3 mb-6"><span id="hero-tagline" class="typing-text font-mono text-xl sm:text-2xl" style="color: #00ff88;"> Future Data Scientist 🚀 </span>
+     </div>
+     <p id="hero-description" class="font-heading font-300 text-lg sm:text-xl max-w-2xl mx-auto mb-10 animate-fade-in-up delay-4" style="color: #8899aa; line-height: 1.7;">A 12-year-old on a mission to decode the world through data. Currently leveling up with SQL &amp; MS Office — one query at a time.</p>
+     <div class="flex flex-wrap gap-4 justify-center animate-fade-in-up delay-5"><a href="#skills" class="font-mono text-sm px-8 py-3 rounded-full border-2 transition-all duration-300" style="border-color: #00ff88; color: #00ff88; background: transparent;" onmouseover="this.style.background='#00ff88';this.style.color='#0a0f1c'" onmouseout="this.style.background='transparent';this.style.color='#00ff88'"> Explore My Skills </a> <a href="#roadmap" class="font-mono text-sm px-8 py-3 rounded-full transition-all duration-300" style="background: rgba(0,255,136,0.1); color: #00ff88;" onmouseover="this.style.background='rgba(0,255,136,0.2)'" onmouseout="this.style.background='rgba(0,255,136,0.1)'"> View Roadmap </a>
+     </div><!-- Scroll indicator -->
+     <div class="mt-16 animate-float"><i data-lucide="chevrons-down" style="color: #00ff88; width: 28px; height: 28px; margin: 0 auto;"></i>
+     </div>
+    </div>
+   </header><!-- About Section -->
+   <section id="about" class="py-24 px-6 relative">
+    <div class="max-w-5xl mx-auto">
+     <div class="flex items-center gap-4 mb-12"><span class="font-mono text-sm" style="color: #00ff88;">01.</span>
+      <h2 id="about-title" class="font-heading font-700 text-3xl sm:text-4xl" style="color: #e0e8f0;">About Me</h2>
+      <div class="flex-1 h-px" style="background: rgba(0,255,136,0.15);"></div>
+     </div>
+     <div class="grid md:grid-cols-2 gap-12 items-center">
+      <div>
+       <p id="about-text" class="font-heading font-300 text-lg leading-relaxed mb-6" style="color: #8899aa;">I'm a 12-year-old with a big dream — to become a data scientist! I believe data has the power to solve real-world problems, and I'm building my skills one step at a time. I've already completed MS Office training and I'm currently diving deep into SQL.</p>
+       <div class="flex flex-wrap gap-3"><span class="font-mono text-xs px-3 py-1 rounded-full" style="background: rgba(0,255,136,0.1); color: #00ff88;">📊 Data Lover</span> <span class="font-mono text-xs px-3 py-1 rounded-full" style="background: rgba(0,168,255,0.1); color: #00a8ff;">🧠 Quick Learner</span> <span class="font-mono text-xs px-3 py-1 rounded-full" style="background: rgba(255,107,53,0.1); color: #ff6b35;">🎯 Goal-Oriented</span>
+       </div>
+      </div><!-- Terminal-style card -->
+      <div class="rounded-xl p-1 animate-pulse-glow" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,168,255,0.2));">
+       <div class="rounded-lg p-6" style="background: #0d1426;">
+        <div class="flex gap-2 mb-4">
+         <div class="w-3 h-3 rounded-full" style="background: #ff5f57;"></div>
+         <div class="w-3 h-3 rounded-full" style="background: #febc2e;"></div>
+         <div class="w-3 h-3 rounded-full" style="background: #28c840;"></div>
+        </div>
+        <pre class="font-mono text-sm leading-relaxed" style="color: #8899aa; overflow-x: auto;"><code><span style="color:#00ff88;">const</span> <span style="color:#00a8ff;">raj</span> = {
+  <span style="color:#ff6b35;">name</span>: <span style="color:#e0e8f0;">"P. Raj Gopinath"</span>,
+  <span style="color:#ff6b35;">age</span>: <span style="color:#00ff88;">12</span>,
+  <span style="color:#ff6b35;">dream</span>: <span style="color:#e0e8f0;">"Data Scientist"</span>,
+  <span style="color:#ff6b35;">status</span>: <span style="color:#e0e8f0;">"Learning &amp; Growing"</span>,
+  <span style="color:#ff6b35;">fuel</span>: <span style="color:#e0e8f0;">"Curiosity ☕"</span>
+};</code></pre>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Skills Section -->
+   <section id="skills" class="py-24 px-6 relative">
+    <div class="max-w-5xl mx-auto">
+     <div class="flex items-center gap-4 mb-12"><span class="font-mono text-sm" style="color: #00ff88;">02.</span>
+      <h2 id="skills-title" class="font-heading font-700 text-3xl sm:text-4xl" style="color: #e0e8f0;">My Skills &amp; Learning</h2>
+      <div class="flex-1 h-px" style="background: rgba(0,255,136,0.15);"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="skills-grid"><!-- SQL -->
+      <div class="skill-card rounded-xl p-6 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.15);">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: rgba(0,255,136,0.1);"><i data-lucide="database" style="color: #00ff88; width: 24px; height: 24px;"></i>
+       </div>
+       <h3 class="font-heading font-600 text-lg mb-2" style="color: #e0e8f0;">SQL</h3>
+       <p class="font-heading font-300 text-sm mb-4" style="color: #8899aa;">Currently studying databases, queries &amp; data manipulation</p>
+       <div class="flex items-center gap-3">
+        <div class="flex-1 h-2 rounded-full overflow-hidden" style="background: rgba(0,255,136,0.1);">
+         <div class="progress-bar h-full rounded-full" style="width: 40%; background: linear-gradient(90deg, #00ff88, #00cc6a);"></div>
+        </div><span class="font-mono text-xs" style="color: #00ff88;">Learning</span>
+       </div>
+      </div><!-- Word -->
+      <div class="skill-card rounded-xl p-6 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,168,255,0.15);">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: rgba(0,168,255,0.1);"><i data-lucide="file-text" style="color: #00a8ff; width: 24px; height: 24px;"></i>
+       </div>
+       <h3 class="font-heading font-600 text-lg mb-2" style="color: #e0e8f0;">MS Word</h3>
+       <p class="font-heading font-300 text-sm mb-4" style="color: #8899aa;">Document creation, formatting &amp; professional writing</p>
+       <div class="flex items-center gap-3">
+        <div class="flex-1 h-2 rounded-full overflow-hidden" style="background: rgba(0,168,255,0.1);">
+         <div class="progress-bar h-full rounded-full" style="width: 85%; background: linear-gradient(90deg, #00a8ff, #0077cc);"></div>
+        </div><span class="font-mono text-xs" style="color: #00a8ff;">Done ✓</span>
+       </div>
+      </div><!-- Excel -->
+      <div class="skill-card rounded-xl p-6 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.15);">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: rgba(0,255,136,0.1);"><i data-lucide="table" style="color: #00ff88; width: 24px; height: 24px;"></i>
+       </div>
+       <h3 class="font-heading font-600 text-lg mb-2" style="color: #e0e8f0;">MS Excel</h3>
+       <p class="font-heading font-300 text-sm mb-4" style="color: #8899aa;">Spreadsheets, formulas, charts &amp; data organization</p>
+       <div class="flex items-center gap-3">
+        <div class="flex-1 h-2 rounded-full overflow-hidden" style="background: rgba(0,255,136,0.1);">
+         <div class="progress-bar h-full rounded-full" style="width: 85%; background: linear-gradient(90deg, #00ff88, #00cc6a);"></div>
+        </div><span class="font-mono text-xs" style="color: #00ff88;">Done ✓</span>
+       </div>
+      </div><!-- PowerPoint -->
+      <div class="skill-card rounded-xl p-6 border" style="background: rgba(13,20,38,0.8); border-color: rgba(255,107,53,0.15);">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: rgba(255,107,53,0.1);"><i data-lucide="presentation" style="color: #ff6b35; width: 24px; height: 24px;"></i>
+       </div>
+       <h3 class="font-heading font-600 text-lg mb-2" style="color: #e0e8f0;">MS PowerPoint</h3>
+       <p class="font-heading font-300 text-sm mb-4" style="color: #8899aa;">Presentations, slide design &amp; visual storytelling</p>
+       <div class="flex items-center gap-3">
+        <div class="flex-1 h-2 rounded-full overflow-hidden" style="background: rgba(255,107,53,0.1);">
+         <div class="progress-bar h-full rounded-full" style="width: 85%; background: linear-gradient(90deg, #ff6b35, #cc5528);"></div>
+        </div><span class="font-mono text-xs" style="color: #ff6b35;">Done ✓</span>
+       </div>
+      </div><!-- Data Science (upcoming) -->
+      <div class="skill-card rounded-xl p-6 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,168,255,0.15);">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: rgba(0,168,255,0.1);"><i data-lucide="brain" style="color: #00a8ff; width: 24px; height: 24px;"></i>
+       </div>
+       <h3 class="font-heading font-600 text-lg mb-2" style="color: #e0e8f0;">Data Science</h3>
+       <p class="font-heading font-300 text-sm mb-4" style="color: #8899aa;">The ultimate goal — Python, ML &amp; AI await!</p>
+       <div class="flex items-center gap-3">
+        <div class="flex-1 h-2 rounded-full overflow-hidden" style="background: rgba(0,168,255,0.1);">
+         <div class="progress-bar h-full rounded-full" style="width: 5%; background: linear-gradient(90deg, #00a8ff, #0077cc);"></div>
+        </div><span class="font-mono text-xs" style="color: #8899aa;">Up Next</span>
+       </div>
+      </div><!-- Problem Solving -->
+      <div class="skill-card rounded-xl p-6 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.15);">
+       <div class="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style="background: rgba(0,255,136,0.1);"><i data-lucide="lightbulb" style="color: #00ff88; width: 24px; height: 24px;"></i>
+       </div>
+       <h3 class="font-heading font-600 text-lg mb-2" style="color: #e0e8f0;">Problem Solving</h3>
+       <p class="font-heading font-300 text-sm mb-4" style="color: #8899aa;">Analytical thinking &amp; creative approaches to challenges</p>
+       <div class="flex items-center gap-3">
+        <div class="flex-1 h-2 rounded-full overflow-hidden" style="background: rgba(0,255,136,0.1);">
+         <div class="progress-bar h-full rounded-full" style="width: 60%; background: linear-gradient(90deg, #00ff88, #00cc6a);"></div>
+        </div><span class="font-mono text-xs" style="color: #00ff88;">Growing</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Roadmap Section -->
+   <section id="roadmap" class="py-24 px-6 relative">
+    <div class="max-w-5xl mx-auto">
+     <div class="flex items-center gap-4 mb-12"><span class="font-mono text-sm" style="color: #00ff88;">03.</span>
+      <h2 id="goals-title" class="font-heading font-700 text-3xl sm:text-4xl" style="color: #e0e8f0;">My Roadmap</h2>
+      <div class="flex-1 h-px" style="background: rgba(0,255,136,0.15);"></div>
+     </div>
+     <div class="relative"><!-- Timeline line -->
+      <div class="absolute left-6 top-0 bottom-0 w-px" style="background: linear-gradient(to bottom, #00ff88, rgba(0,255,136,0.1));"></div><!-- Step 1 -->
+      <div class="roadmap-item flex gap-6 mb-10 pl-2">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 border-2" style="background: #0a0f1c; border-color: #00ff88;"><i data-lucide="check" style="color: #00ff88; width: 18px; height: 18px;"></i>
+       </div>
+       <div class="rounded-xl p-5 flex-1 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.15);">
+        <div class="flex items-center gap-2 mb-1"><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(0,255,136,0.15); color: #00ff88;">COMPLETED</span>
+        </div>
+        <h3 class="font-heading font-600 text-lg" style="color: #e0e8f0;">MS Office Mastery</h3>
+        <p class="font-heading font-300 text-sm" style="color: #8899aa;">Word, Excel &amp; PowerPoint — building the foundation ✅</p>
+       </div>
+      </div><!-- Step 2 -->
+      <div class="roadmap-item flex gap-6 mb-10 pl-2">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 border-2 animate-pulse-glow" style="background: #0a0f1c; border-color: #00ff88;"><i data-lucide="loader" style="color: #00ff88; width: 18px; height: 18px;"></i>
+       </div>
+       <div class="rounded-xl p-5 flex-1 border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.3);">
+        <div class="flex items-center gap-2 mb-1"><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(0,255,136,0.3); color: #00ff88;">IN PROGRESS</span>
+        </div>
+        <h3 class="font-heading font-600 text-lg" style="color: #e0e8f0;">SQL &amp; Databases</h3>
+        <p class="font-heading font-300 text-sm" style="color: #8899aa;">Learning to talk to data — queries, joins &amp; more 🔥</p>
+       </div>
+      </div><!-- Step 3 -->
+      <div class="roadmap-item flex gap-6 mb-10 pl-2">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 border-2" style="background: #0a0f1c; border-color: #8899aa;"><span class="font-mono text-xs" style="color: #8899aa;">3</span>
+       </div>
+       <div class="rounded-xl p-5 flex-1 border" style="background: rgba(13,20,38,0.5); border-color: rgba(136,153,170,0.15);">
+        <div class="flex items-center gap-2 mb-1"><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(136,153,170,0.1); color: #8899aa;">NEXT UP</span>
+        </div>
+        <h3 class="font-heading font-600 text-lg" style="color: #8899aa;">Python Programming</h3>
+        <p class="font-heading font-300 text-sm" style="color: #667788;">The language of data science 🐍</p>
+       </div>
+      </div><!-- Step 4 -->
+      <div class="roadmap-item flex gap-6 mb-10 pl-2">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 border-2" style="background: #0a0f1c; border-color: #8899aa;"><span class="font-mono text-xs" style="color: #8899aa;">4</span>
+       </div>
+       <div class="rounded-xl p-5 flex-1 border" style="background: rgba(13,20,38,0.5); border-color: rgba(136,153,170,0.15);">
+        <div class="flex items-center gap-2 mb-1"><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(136,153,170,0.1); color: #8899aa;">FUTURE</span>
+        </div>
+        <h3 class="font-heading font-600 text-lg" style="color: #8899aa;">Data Science &amp; Machine Learning</h3>
+        <p class="font-heading font-300 text-sm" style="color: #667788;">Pandas, NumPy, Scikit-learn &amp; beyond 🤖</p>
+       </div>
+      </div><!-- Step 5 -->
+      <div class="roadmap-item flex gap-6 pl-2">
+       <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center z-10 border-2" style="background: #0a0f1c; border-color: #8899aa;"><i data-lucide="star" style="color: #8899aa; width: 18px; height: 18px;"></i>
+       </div>
+       <div class="rounded-xl p-5 flex-1 border" style="background: rgba(13,20,38,0.5); border-color: rgba(136,153,170,0.15);">
+        <div class="flex items-center gap-2 mb-1"><span class="font-mono text-xs px-2 py-0.5 rounded" style="background: rgba(136,153,170,0.1); color: #8899aa;">DREAM</span>
+        </div>
+        <h3 class="font-heading font-600 text-lg" style="color: #8899aa;">Become a Data Scientist</h3>
+        <p class="font-heading font-300 text-sm" style="color: #667788;">Making an impact with data-driven decisions 🌟</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Fun Stats -->
+   <section class="py-20 px-6">
+    <div class="max-w-4xl mx-auto">
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="text-center p-6 rounded-xl border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.1);">
+       <div class="font-heading font-800 text-3xl mb-1" style="color: #00ff88;">
+        12
+       </div>
+       <div class="font-mono text-xs" style="color: #8899aa;">
+        Years Old
+       </div>
+      </div>
+      <div class="text-center p-6 rounded-xl border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,168,255,0.1);">
+       <div class="font-heading font-800 text-3xl mb-1" style="color: #00a8ff;">
+        3
+       </div>
+       <div class="font-mono text-xs" style="color: #8899aa;">
+        MS Office Tools
+       </div>
+      </div>
+      <div class="text-center p-6 rounded-xl border" style="background: rgba(13,20,38,0.8); border-color: rgba(255,107,53,0.1);">
+       <div class="font-heading font-800 text-3xl mb-1" style="color: #ff6b35;">
+        1
+       </div>
+       <div class="font-mono text-xs" style="color: #8899aa;">
+        Course Active
+       </div>
+      </div>
+      <div class="text-center p-6 rounded-xl border" style="background: rgba(13,20,38,0.8); border-color: rgba(0,255,136,0.1);">
+       <div class="font-heading font-800 text-3xl mb-1" style="color: #00ff88;">
+        ∞
+       </div>
+       <div class="font-mono text-xs" style="color: #8899aa;">
+        Curiosity
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+   <footer class="py-12 px-6 border-t" style="border-color: rgba(0,255,136,0.1);">
+    <div class="max-w-5xl mx-auto text-center">
+     <div class="font-heading font-bold text-2xl mb-3" style="color: #00ff88;"><span style="color: #e0e8f0;">&lt;</span>Raj<span style="color: #e0e8f0;">/&gt;</span>
+     </div>
+     <p id="footer-text" class="font-mono text-sm mb-4" style="color: #8899aa;">Built with passion by P. Raj Gopinath</p>
+     <p class="font-mono text-xs" style="color: #556677;">The journey of a thousand data points begins with a single query. 💡</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Intersection Observer for scroll animations
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in-up');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.skill-card, .roadmap-item').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Animate progress bars on scroll
+    const progressObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bars = entry.target.querySelectorAll('.progress-bar');
+          bars.forEach(bar => {
+            const width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(() => { bar.style.width = width; }, 200);
+          });
+          progressObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const skillsGrid = document.getElementById('skills-grid');
+    if (skillsGrid) progressObserver.observe(skillsGrid);
+
+    // Element SDK
+    const defaultConfig = {
+      hero_name: 'P. Raj Gopinath',
+      hero_tagline: 'Future Data Scientist 🚀',
+      hero_description: 'A 12-year-old on a mission to decode the world through data. Currently leveling up with SQL & MS Office — one query at a time.',
+      about_title: 'About Me',
+      about_text: "I'm a 12-year-old with a big dream — to become a data scientist! I believe data has the power to solve real-world problems, and I'm building my skills one step at a time. I've already completed MS Office training and I'm currently diving deep into SQL.",
+      skills_title: 'My Skills & Learning',
+      goals_title: 'My Roadmap',
+      footer_text: 'Built with passion by P. Raj Gopinath',
+      background_color: '#0a0f1c',
+      surface_color: '#0d1426',
+      text_color: '#e0e8f0',
+      accent_color: '#00ff88',
+      secondary_accent: '#00a8ff',
+      font_family: 'Outfit',
+      font_size: 16
+    };
+
+    function applyConfig(config) {
+      const c = { ...defaultConfig, ...config };
+
+      // Text content
+      document.getElementById('hero-name').textContent = c.hero_name;
+      document.getElementById('hero-tagline').textContent = c.hero_tagline;
+      document.getElementById('hero-description').textContent = c.hero_description;
+      document.getElementById('about-title').textContent = c.about_title;
+      document.getElementById('about-text').textContent = c.about_text;
+      document.getElementById('skills-title').textContent = c.skills_title;
+      document.getElementById('goals-title').textContent = c.goals_title;
+      document.getElementById('footer-text').textContent = c.footer_text;
+
+      // Colors
+      const wrapper = document.getElementById('app-wrapper');
+      wrapper.style.backgroundColor = c.background_color;
+      wrapper.style.color = c.text_color;
+
+      // Font
+      const fontStack = ${c.font_family}, Outfit, sans-serif;
+      document.querySelectorAll('.font-heading').forEach(el => {
+        el.style.fontFamily = fontStack;
+      });
+
+      // Font size
+      const base = c.font_size || 16;
+      document.getElementById('hero-name').style.fontSize = ${base * 3.5}px;
+      document.getElementById('hero-tagline').style.fontSize = ${base * 1.5}px;
+      document.getElementById('hero-description').style.fontSize = ${base * 1.2}px;
+      document.getElementById('about-title').style.fontSize = ${base * 2}px;
+      document.getElementById('about-text').style.fontSize = ${base * 1.1}px;
+      document.getElementById('skills-title').style.fontSize = ${base * 2}px;
+      document.getElementById('goals-title').style.fontSize = ${base * 2}px;
+      document.getElementById('footer-text').style.fontSize = ${base * 0.875}px;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          applyConfig(config);
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }
+            },
+            {
+              get: () => config.secondary_accent || defaultConfig.secondary_accent,
+              set: (v) => { config.secondary_accent = v; window.elementSdk.setConfig({ secondary_accent: v }); }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['hero_name', config.hero_name || defaultConfig.hero_name],
+          ['hero_tagline', config.hero_tagline || defaultConfig.hero_tagline],
+          ['hero_description', config.hero_description || defaultConfig.hero_description],
+          ['about_title', config.about_title || defaultConfig.about_title],
+          ['about_text', config.about_text || defaultConfig.about_text],
+          ['skills_title', config.skills_title || defaultConfig.skills_title],
+          ['goals_title', config.goals_title || defaultConfig.goals_title],
+          ['footer_text', config.footer_text || defaultConfig.footer_text]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dde59c3e1d1b2a9',t:'MTc3Mzc3NTE4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
