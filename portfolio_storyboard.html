@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P. Raj Gopinath</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            /* Enable smooth scrolling across the whole document */
+            scroll-behavior: smooth;
+            background-color: #0f172a; /* Dark background as base */
+            color: #f8fafc;
+        }
+
+        /* Container for scroll snapping */
+        .storyboard-container {
+            height: 100vh;
+            overflow-y: scroll;
+            /* CSS Scroll Snap for section-by-section feeling */
+            scroll-snap-type: y mandatory;
+        }
+
+        .story-section {
+            height: 100vh;
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        /* Reusable Glassmorphism Card Style */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .dark-glass-card {
+             background: rgba(30, 41, 59, 0.7);
+             backdrop-filter: blur(10px);
+             -webkit-backdrop-filter: blur(10px);
+             border-radius: 20px;
+             border: 1px solid rgba(255, 255, 255, 0.05);
+             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Specific Section Backgrounds --- */
+        
+        /* 1. Header */
+        #section-header {
+            background-color: #e2e8f0; /* Light gray background */
+        }
+        #section-header .dashboard-mockup {
+            width: 90%;
+            max-width: 1000px;
+            height: 80%;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            display: flex;
+        }
+
+        /* 2. SQL */
+        #section-sql {
+            background-color: #0f172a; /* Slate 900 */
+        }
+        #section-sql .mockup-container {
+             width: 80%;
+             max-width: 900px;
+             height: 70%;
+             background: rgba(30, 41, 59, 0.5); /* Semi-transparent Slate 800 */
+             border: 1px solid #334155;
+             border-radius: 1rem;
+             display: flex;
+             position: relative;
+        }
+        .code-bg {
+            font-family: monospace;
+            color: rgba(148, 163, 184, 0.3); /* Faded text */
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            overflow: hidden;
+            z-index: 0;
+            white-space: pre;
+            font-size: 0.9rem;
+        }
+        .sql-button-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        /* 3. Python/Power BI */
+        #section-bi {
+            background-color: #eab308; /* Yellow 500 */
+        }
+        #section-bi .bi-mockup {
+            width: 90%;
+            max-width: 1100px;
+            height: 80%;
+            background: #fef08a; /* Yellow 200 */
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            padding: 1rem;
+            gap: 1rem;
+        }
+        
+        /* 4. Roadmap */
+        #section-roadmap {
+            background-color: #020617; /* Very dark slate */
+            background-image: radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.1) 0%, transparent 60%);
+        }
+        .roadmap-path {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        /* A very simplified representation of the glowing path */
+        .glowing-node {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 0 15px rgba(255,255,255,0.1);
+            margin: 1rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .glowing-node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255,255,255,0.3);
+        }
+        .glowing-node.sql-node { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); border-color: rgba(59, 130, 246, 0.5); }
+        .glowing-node.python-node { box-shadow: 0 0 20px rgba(234, 179, 8, 0.5); border-color: rgba(234, 179, 8, 0.5); }
+        .glowing-node.webdev-node { box-shadow: 0 0 20px rgba(34, 197, 94, 0.5); border-color: rgba(34, 197, 94, 0.5); }
+        
+        .path-line {
+             position: absolute;
+             width: 4px;
+             background: linear-gradient(to bottom, rgba(59, 130, 246, 0.5), rgba(34, 197, 94, 0.5));
+             height: 50%;
+             z-index: -1;
+             opacity: 0.5;
+             filter: blur(2px);
+        }
+
+        /* 5. Explore */
+        #section-explore {
+            background-color: #000;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Confetti effect background */
+        .confetti-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #ef4444 2px, transparent 3px),
+                radial-gradient(circle at 70% 60%, #3b82f6 2px, transparent 3px),
+                radial-gradient(circle at 40% 80%, #22c55e 2px, transparent 3px),
+                radial-gradient(circle at 80% 20%, #eab308 2px, transparent 3px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            animation: float 20s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+        
+        #section-explore .explore-mockup {
+            width: 85%;
+            max-width: 1000px;
+            height: 75%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Vibrant gradient overlay inside the mockup */
+        .rainbow-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(239,68,68,0.5) 0%, rgba(234,179,8,0.5) 25%, rgba(34,197,94,0.5) 50%, rgba(59,130,246,0.5) 75%, rgba(168,85,247,0.5) 100%);
+            mix-blend-mode: overlay;
+            z-index: -1;
+        }
+
+        /* 6. Footer */
+        #section-footer {
+            background-color: #f1f5f9; /* Slate 100 */
+            color: #334155;
+        }
+        .footer-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        /* Utility for chart mockups */
+        .chart-bar { background-color: #3b82f6; border-radius: 2px; }
+        .chart-bar-alt { background-color: #f59e0b; border-radius: 2px; }
+        
+        /* Custom Scrollbar for the container */
+        .storyboard-container::-webkit-scrollbar { width: 8px; }
+        .storyboard-container::-webkit-scrollbar-track { background: #1e293b; }
+        .storyboard-container::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        .storyboard-container::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+        /* Mouse cursor hint */
+        .cursor-hint {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 2rem;
+            color: white;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            animation: bounce 2s infinite;
+            z-index: 50;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(0); }
+            40% { transform: translateY(-10px) translateX(-5px); }
+            60% { transform: translateY(-5px) translateX(-2px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="storyboard-container">
+
+        <!-- 1. Header Section -->
+        <section class="story-section" id="section-header">
+            <div class="dashboard-mockup text-slate-800">
+                <!-- Sidebar -->
+                <div class="w-20 border-r border-slate-200 flex flex-col items-center py-6 gap-8 bg-slate-50 rounded-l-2xl">
+                    <div class="text-blue-500 text-2xl font-bold">p</div>
+                    <div class="flex flex-col gap-6 text-slate-400">
+                        <i class="fas fa-home text-blue-500"></i>
+                        <i class="fas fa-chart-bar"></i>
+                        <i class="fas fa-users"></i>
+                        <i class="fas fa-folder"></i>
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+                
+                <!-- Main Content Area -->
+                <div class="flex-1 flex flex-col">
+                    <!-- Top Nav -->
+                    <div class="h-16 border-b border-slate-100 flex items-center justify-between px-8">
+                        <div class="font-semibold text-lg">Dashboard</div>
+                        <div class="flex items-center gap-4 text-slate-500">
+                            <div class="bg-slate-100 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm w-64">
+                                <i class="fas fa-search text-xs"></i>
+                                <span class="opacity-50">Search...</span>
+                            </div>
+                            <i class="fas fa-bell"></i>
+                            <div class="w-8 h-8 rounded-full bg-slate-300 overflow-hidden">
+                                <img src="https://placehold.co/100x100/3b82f6/white?text=PR" alt="Avatar" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hero Content -->
+                    <div class="flex-1 flex items-center px-12 relative">
+                        <div class="max-w-xl">
+                            <h1 class="text-5xl font-bold leading-tight mb-4 text-slate-800">
+                                P. Raj Gopinath —<br>
+                                Future Data Scientist
+                            </h1>
+                            <p class="text-slate-500 text-lg mb-8 max-w-md">
+                                12 year-old South Asian youth aspiring to be a data scientist.
+                            </p>
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-medium transition-colors shadow-lg shadow-blue-500/30">
+                                Get started
+                            </button>
+                        </div>
+                        
+                        <!-- Portrait Image (Placeholder matching the vibe) -->
+                        <div class="absolute right-12 top-1/2 transform -translate-y-1/2">
+                            <div class="w-64 h-64 rounded-full border-8 border-white shadow-2xl overflow-hidden bg-slate-200">
+                                 <!-- Using a placeholder, in a real scenario this would be the actual image -->
+                                <img src="WhatsApp Image 2026-07-02 at 8.05.52 PM.jpeg" alt="P. Raj Gopinath" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. SQL Section -->
+        <section class="story-section" id="section-sql">
+            <div class="mockup-container text-slate-200 shadow-2xl shadow-blue-900/20">
+                <!-- Sidebar -->
+                <div class="w-48 border-r border-slate-700 bg-slate-800/50 p-4 rounded-l-2xl flex flex-col gap-2">
+                    <div class="flex items-center gap-2 text-slate-300 mb-4 px-2">
+                        <i class="fas fa-database"></i>
+                        <span class="font-semibold text-sm">Databases</span>
+                    </div>
+                    <div class="bg-slate-700/50 px-3 py-2 rounded-lg text-sm flex items-center gap-2 cursor-pointer text-blue-400">
+                        <i class="fas fa-home text-xs"></i> Home
+                    </div>
+                    <div class="px-3 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-slate-700/30 cursor-pointer transition-colors">
+                        <i class="fas fa-chart-line text-xs"></i> Dashboard
+                    </div>
+                    <div class="px-3 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-slate-700/30 cursor-pointer transition-colors">
+                        <i class="fab fa-python text-xs"></i> Python
+                    </div>
+                    <div class="px-3 py-2 rounded-lg text-sm flex items-center gap-2 hover:bg-slate-700/30 cursor-pointer transition-colors">
+                        <i class="fas fa-cogs text-xs"></i> Settings
+                    </div>
+                </div>
+                
+                <!-- Main Editor Area -->
+                <div class="flex-1 flex flex-col relative">
+                    <!-- Top Bar -->
+                    <div class="h-14 border-b border-slate-700 flex items-center justify-between px-6 bg-slate-800/30">
+                        <div class="font-semibold text-slate-300">Dashboard</div>
+                        <div class="flex items-center gap-4">
+                            <div class="bg-slate-900/50 px-3 py-1 rounded-full flex items-center gap-2 text-xs border border-slate-700 w-48">
+                                <i class="fas fa-search opacity-50"></i>
+                                <span class="opacity-50">Search...</span>
+                            </div>
+                            <i class="fas fa-bell text-slate-400 text-sm"></i>
+                            <div class="w-6 h-6 rounded-full bg-slate-600 overflow-hidden"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Code Area Background -->
+                    <div class="code-bg">
+-- Example SQL Query
+SELECT
+    customer_id,
+    SUM(order_total) as total_spent,
+    COUNT(order_id) as total_orders
+FROM
+    sales_data
+WHERE
+    order_date >= '2023-01-01'
+    AND status = 'completed'
+GROUP BY
+    customer_id
+HAVING
+    SUM(order_total) > 1000
+ORDER BY
+    total_spent DESC
+LIMIT 10;
+
+-- Another query
+SELECT 
+    product_name, 
+    category,
+    avg(price) over(partition by category) as avg_cat_price
+FROM products;
+                    </div>
+
+                    <!-- Giant SQL Button Overlay -->
+                    <div class="sql-button-overlay text-center relative group">
+                        <h2 class="text-white text-3xl font-bold mb-4 tracking-widest absolute -top-12 left-0">SQL</h2>
+                        <button class="bg-blue-600 hover:bg-blue-500 text-white text-2xl font-bold py-4 px-12 rounded-2xl shadow-[0_0_30px_rgba(37,99,235,0.5)] border border-blue-400 transition-transform transform hover:scale-105 relative">
+                            SQL
+                            <i class="fas fa-mouse-pointer cursor-hint text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Python/Power BI Section -->
+        <section class="story-section" id="section-bi">
+            <div class="bi-mockup text-slate-800">
+                <!-- Sidebar -->
+                <div class="w-48 bg-yellow-600/10 rounded-xl p-4 flex flex-col gap-2 border border-yellow-500/20">
+                    <div class="flex items-center gap-2 font-bold text-lg mb-4 text-yellow-800 px-2">
+                        <i class="fas fa-chart-pie"></i> BI
+                    </div>
+                    <div class="bg-yellow-500/20 px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 cursor-pointer text-yellow-900">
+                        <i class="fab fa-python w-4"></i> Python
+                    </div>
+                    <div class="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-yellow-500/10 cursor-pointer transition-colors text-yellow-800">
+                        <i class="fas fa-tachometer-alt w-4"></i> Dashboard
+                    </div>
+                    <div class="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-yellow-500/10 cursor-pointer transition-colors text-yellow-800">
+                        <i class="fab fa-python w-4"></i> Python
+                    </div>
+                    <div class="px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 hover:bg-yellow-500/10 cursor-pointer transition-colors text-yellow-800">
+                        <i class="fas fa-database w-4"></i> Data
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="flex-1 flex flex-col gap-4">
+                    <!-- Top Bar -->
+                    <div class="h-12 flex items-center justify-between px-2">
+                        <div class="font-bold text-xl text-yellow-900">Python/BI</div>
+                        <div class="flex items-center gap-4">
+                            <div class="bg-white/50 px-3 py-1 rounded-full flex items-center gap-2 text-xs w-48 border border-yellow-500/30">
+                                <i class="fas fa-search opacity-50"></i>
+                                <span class="opacity-50">Search...</span>
+                            </div>
+                            <i class="fas fa-bell text-yellow-700"></i>
+                             <div class="w-8 h-8 rounded-full bg-yellow-300 overflow-hidden border border-yellow-500">
+                                <img src="https://placehold.co/100x100/eab308/ffffff?text=PR" alt="Avatar" class="w-full h-full object-cover">
+                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Grid -->
+                    <div class="flex-1 grid grid-cols-3 grid-rows-2 gap-4 relative">
+                        
+                        <!-- Chart 1 (Large) -->
+                        <div class="col-span-2 row-span-1 bg-white/60 rounded-xl p-4 border border-yellow-500/20 flex flex-col">
+                            <h3 class="text-sm font-semibold mb-2">Data Visualizations</h3>
+                            <div class="flex-1 flex items-end justify-between gap-1 mt-2">
+                                <!-- Mock Bars -->
+                                <div class="w-full bg-blue-500/20 rounded-t h-[40%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                                <div class="w-full bg-blue-500/20 rounded-t h-[70%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                                <div class="w-full bg-blue-500/20 rounded-t h-[30%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                                <div class="w-full bg-blue-500/20 rounded-t h-[80%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                                <div class="w-full bg-blue-500/20 rounded-t h-[50%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                                <div class="w-full bg-blue-500/20 rounded-t h-[90%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                                <div class="w-full bg-blue-500/20 rounded-t h-[60%] relative"><div class="absolute bottom-0 w-full chart-bar h-full"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2 (Small) -->
+                        <div class="col-span-1 row-span-1 bg-white/60 rounded-xl p-4 border border-yellow-500/20 flex flex-col">
+                            <h3 class="text-sm font-semibold mb-2">Metrics</h3>
+                            <div class="flex-1 flex items-end justify-around gap-2 mt-2">
+                                <div class="w-1/4 chart-bar h-[60%]"></div>
+                                <div class="w-1/4 chart-bar h-[40%]"></div>
+                                <div class="w-1/4 chart-bar h-[80%]"></div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3 (Large Multi-series) -->
+                        <div class="col-span-2 row-span-1 bg-white/60 rounded-xl p-4 border border-yellow-500/20 flex flex-col">
+                            <h3 class="text-sm font-semibold mb-2">Trend Analysis</h3>
+                            <div class="flex-1 flex items-end justify-between gap-2 mt-2">
+                                 <!-- Grouped Mock Bars -->
+                                <div class="flex flex-1 items-end gap-1 h-full">
+                                    <div class="w-1/2 chart-bar h-[30%]"></div><div class="w-1/2 chart-bar-alt h-[50%]"></div>
+                                </div>
+                                <div class="flex flex-1 items-end gap-1 h-full">
+                                    <div class="w-1/2 chart-bar h-[60%]"></div><div class="w-1/2 chart-bar-alt h-[40%]"></div>
+                                </div>
+                                <div class="flex flex-1 items-end gap-1 h-full">
+                                    <div class="w-1/2 chart-bar h-[40%]"></div><div class="w-1/2 chart-bar-alt h-[70%]"></div>
+                                </div>
+                                <div class="flex flex-1 items-end gap-1 h-full">
+                                    <div class="w-1/2 chart-bar h-[80%]"></div><div class="w-1/2 chart-bar-alt h-[60%]"></div>
+                                </div>
+                                 <div class="flex flex-1 items-end gap-1 h-full">
+                                    <div class="w-1/2 chart-bar h-[50%]"></div><div class="w-1/2 chart-bar-alt h-[90%]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4 (Horizontal bars) -->
+                        <div class="col-span-1 row-span-1 bg-white/60 rounded-xl p-4 border border-yellow-500/20 flex flex-col">
+                            <h3 class="text-sm font-semibold mb-2">Breakdown</h3>
+                            <div class="flex-1 flex flex-col justify-around mt-2">
+                                <div class="w-full bg-slate-200 h-3 rounded-full"><div class="chart-bar h-full rounded-full w-[80%]"></div></div>
+                                <div class="w-full bg-slate-200 h-3 rounded-full"><div class="chart-bar h-full rounded-full w-[60%]"></div></div>
+                                <div class="w-full bg-slate-200 h-3 rounded-full"><div class="chart-bar h-full rounded-full w-[90%]"></div></div>
+                                <div class="w-full bg-slate-200 h-3 rounded-full"><div class="chart-bar h-full rounded-full w-[40%]"></div></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Power BI Button -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                             <button class="bg-white text-slate-800 text-3xl font-bold py-4 px-8 rounded-2xl shadow-xl shadow-yellow-900/20 border-2 border-yellow-300 hover:scale-105 transition-transform flex items-center gap-4 relative">
+                                Power BI
+                                <i class="fas fa-mouse-pointer cursor-hint text-slate-800" style="filter:none;"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Roadmap Section -->
+        <section class="story-section" id="section-roadmap">
+            <div class="w-full max-w-3xl h-full flex flex-col justify-center items-center relative">
+                
+                <h2 class="absolute top-10 left-10 text-3xl font-bold text-slate-400 opacity-50">Roadmap</h2>
+
+                <!-- Simplified visual representation of the path -->
+                <div class="relative w-full h-[60vh] flex flex-col items-center justify-around z-10">
+                    
+                    <!-- Decorative background path line -->
+                    <svg class="absolute top-0 left-0 w-full h-full -z-10" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M 50 0 C 80 20, 20 40, 50 60 C 80 80, 20 100, 50 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8" stroke-linecap="round"/>
+                        <!-- Glowing core of the path -->
+                        <path d="M 50 0 C 80 20, 20 40, 50 60 C 80 80, 20 100, 50 100" fill="none" stroke="rgba(59, 130, 246, 0.3)" stroke-width="2" stroke-linecap="round" filter="blur(2px)"/>
+                    </svg>
+
+                    <!-- Nodes -->
+                    <div class="w-full flex justify-end pr-20">
+                         <div class="glowing-node border-slate-500 text-slate-300">
+                            <i class="fas fa-check-circle text-green-400"></i> MS Office
+                        </div>
+                    </div>
+                    
+                    <div class="w-full flex justify-start pl-32">
+                         <div class="glowing-node sql-node text-blue-300">
+                            <i class="fas fa-check-circle text-green-400"></i> SQL
+                        </div>
+                    </div>
+                    
+                    <div class="w-full flex justify-end pr-32">
+                        <div class="glowing-node sql-node text-blue-300 transform scale-110">
+                            <img src="icons8-power-bi-2021-50.png " height="60"  width="30" > POWER BI
+                        </div>
+                    </div>
+
+                    <div class="w-full flex justify-start pl-20">
+                        <div class="glowing-node python-node text-yellow-400 text-xl font-bold px-6 py-3">
+                            <i class="fab fa-python"></i> Python
+                            <!-- Glowing dot indicator -->
+                            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-green-400 rounded-full shadow-[0_0_15px_#4ade80]"></div>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex justify-end pr-10">
+                        <div class="glowing-node webdev-node text-green-400 text-xl font-bold px-6 py-3 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.3)]">
+                            <i class="fas fa-wifi"></i> Web Dev
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Explore Section -->
+        <section class="story-section" id="section-explore">
+            <div class="confetti-bg"></div>
+            
+            <div class="explore-mockup shadow-2xl shadow-purple-900/50">
+                <div class="rainbow-overlay"></div>
+                
+                <!-- Inner Dashboard UI (similar structure, different styles) -->
+                <div class="flex h-full w-full bg-slate-900/40 rounded-xl overflow-hidden backdrop-blur-sm border border-white/10">
+                    
+                    <!-- Sidebar -->
+                    <div class="w-48 bg-black/20 p-4 flex flex-col gap-2 border-r border-white/10">
+                        <div class="flex items-center gap-2 font-bold text-lg mb-4 text-white px-2">
+                            <i class="fas fa-chart-line"></i> Dashboard
+                        </div>
+                        <div class="bg-white/10 px-3 py-2 rounded-lg text-sm text-white flex items-center gap-2 cursor-pointer">
+                             Home
+                        </div>
+                        <div class="px-3 py-2 rounded-lg text-sm text-white/70 flex items-center gap-2 hover:bg-white/5 cursor-pointer">
+                             Dashboard
+                        </div>
+                        <div class="px-3 py-2 rounded-lg text-sm text-white/70 flex items-center gap-2 hover:bg-white/5 cursor-pointer">
+                             Python
+                        </div>
+                    </div>
+
+                    <!-- Main Content -->
+                    <div class="flex-1 flex flex-col p-4 gap-4 z-10">
+                        <!-- Top Bar -->
+                        <div class="flex justify-between items-center text-white mb-2">
+                            <h2 class="text-3xl font-bold tracking-wider">Explore</h2>
+                             <div class="bg-black/30 px-4 py-1.5 rounded-full flex items-center gap-2 text-sm border border-white/20">
+                                <i class="fas fa-search opacity-70"></i>
+                                <span class="opacity-70">Search</span>
+                            </div>
+                        </div>
+
+                        <!-- Grid -->
+                        <div class="flex-1 grid grid-cols-3 gap-4">
+                            <!-- Large Chart Area -->
+                            <div class="col-span-2 bg-black/20 rounded-xl p-4 border border-white/10 flex flex-col backdrop-blur-md">
+                                <h3 class="text-white/80 text-sm mb-4">Data Visualizations</h3>
+                                <div class="flex-1 flex items-end justify-around gap-2">
+                                     <div class="w-full bg-blue-500/30 rounded-t h-[40%]"><div class="chart-bar bg-blue-400 h-full w-full rounded-t"></div></div>
+                                     <div class="w-full bg-blue-500/30 rounded-t h-[70%]"><div class="chart-bar bg-yellow-400 h-full w-full rounded-t"></div></div>
+                                     <div class="w-full bg-blue-500/30 rounded-t h-[30%]"><div class="chart-bar bg-green-400 h-full w-full rounded-t"></div></div>
+                                     <div class="w-full bg-blue-500/30 rounded-t h-[90%]"><div class="chart-bar bg-purple-400 h-full w-full rounded-t"></div></div>
+                                     <div class="w-full bg-blue-500/30 rounded-t h-[50%]"><div class="chart-bar bg-pink-400 h-full w-full rounded-t"></div></div>
+                                     <div class="w-full bg-blue-500/30 rounded-t h-[80%]"><div class="chart-bar bg-orange-400 h-full w-full rounded-t"></div></div>
+                                </div>
+                            </div>
+
+                            <!-- Right column charts -->
+                            <div class="col-span-1 flex flex-col gap-4">
+                                <div class="flex-1 bg-black/20 rounded-xl p-4 border border-white/10 flex flex-col backdrop-blur-md">
+                                    <h3 class="text-white/80 text-sm mb-2">Metrics</h3>
+                                    <div class="flex-1 flex items-end justify-around gap-1">
+                                        <div class="w-1/3 bg-blue-400 h-[60%] rounded-t"></div>
+                                        <div class="w-1/3 bg-purple-400 h-[40%] rounded-t"></div>
+                                        <div class="w-1/3 bg-green-400 h-[80%] rounded-t"></div>
+                                    </div>
+                                </div>
+                                <div class="flex-1 bg-black/20 rounded-xl p-4 border border-white/10 flex flex-col backdrop-blur-md">
+                                     <h3 class="text-white/80 text-sm mb-2">Stats</h3>
+                                     <div class="flex-1 flex flex-col justify-around">
+                                        <div class="w-full bg-white/10 h-2 rounded-full"><div class="bg-yellow-400 h-full rounded-full w-[75%]"></div></div>
+                                        <div class="w-full bg-white/10 h-2 rounded-full"><div class="bg-pink-400 h-full rounded-full w-[45%]"></div></div>
+                                        <div class="w-full bg-white/10 h-2 rounded-full"><div class="bg-blue-400 h-full rounded-full w-[90%]"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Giant Center Button -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+                            <button class="bg-white/20 backdrop-blur-lg border border-white/50 text-white text-2xl font-bold py-3 px-8 rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:bg-white/30 transition-all">
+                                Power BI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </section></div></body>
+</html>
